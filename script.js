@@ -26,7 +26,8 @@ class Calculator{
 
         //Delete
         delete(){
-
+            //take the current operand, convert to string & chop off the last character 
+            this.currentOperand = this.currentOperand.toString.slice(0,-1)
         }
         
         //add numbers to the screen  
@@ -144,4 +145,12 @@ allClearButton.addEventListener('click', button => {
     calculator.clear()
         //update the display
     calculator.updateDisplay()
-    })
+})
+
+deleteButton.addEventListener('click', button => {
+
+    //call delete function
+    calculator.delete()
+        //update the display
+    calculator.updateDisplay()
+})
