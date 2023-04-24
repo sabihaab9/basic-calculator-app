@@ -138,5 +138,11 @@ equalsButton.addEventListener('click', button => {
     calculator.updateDisplay()
 })
 
+allClearButton.addEventListener('click',button => {
+    //call clear function
+    calculator.clear()
+    //update display
+    calculator.updateDisplay()
+} )
 
 
