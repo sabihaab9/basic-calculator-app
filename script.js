@@ -45,23 +45,32 @@ class Calculator{
 
         chooseOperation(operation){
             
+            //if the current operand is empty, we stop function 
             if(this.currentOperand === '') return
+           //if the previous operand is not an empty string, we waht to execute the compute fnc.
             if(this.previousOperand !== ''){
                 this.compute()
             }
+            //set this.operation = the 'operation' we passed in.
             this.operation = operation
+            //we're done typing the current # and so we recycle that to the previous operand 
             this.previousOperand = this.currentOperand
+            //clear out the current operand 
             this.currentOperand = ''
         }
         
 
         compute(number){
+            //result
             let computation
+            //convert strings previousOperand and currentOPerand to decimal numbers
             const prev = parseFloat(this.previousOperand)
             const current = parseFloat(this.currentOperand)
 
+            //if we dont have a prev or current operand, stop fnc.
             if(isNaN(prev) || isNaN(current)) return 
 
+            
             switch(this.operation){
                 case '+':
                     computation = prev + current
@@ -79,22 +88,37 @@ class Calculator{
                     computation = prev / current
                     break
                 
-            //if none of our operations 
+            //if none of our operations equal the above, stop compute fnc.
                 default:
                     return
             }
+
             this.currentOperand = computation
             this.operation = undefined
             this.previousOperand = ''
 
         }
 
+        getDisplayNumber(number){
+            //convert number from string to decimal
+            const floatNumber = parseFloat(number)
+            
+            //if floatNumber is not a number
+            if (isNaN(floatNumber)) return ''
 
+            //if we do have a number, change number to string with commas.
+            return floatNumber.toLocaleString('en')}
+        }
 
         updateDisplay(){
-            this.currentOperandTextElement.innerText = this.currentOperand
-            this.previousOperandTextElement.innerText = this.previousOperand
-
+            this.currentOperandTextElement.innerText =
+             this.getDisplayNumber(this.currentOperand)
+            //to show commas and operations:
+            //if we have an operation, display our previous operand and our operation 
+            if(this.operation != null){
+                this.previousOperandTextElement.innerText = 
+                `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+            }
         }
 }
 //constant variables that will be our buttons 
@@ -139,7 +163,7 @@ equalsButton.addEventListener('click', button => {
     calculator.updateDisplay()
 })
 
-allClearButton.addEventListener('click',button => {
+allClearButton.addEventListener('click', button => {
     //call clear function
     calculator.clear()
     //update display
