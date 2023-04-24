@@ -1,5 +1,5 @@
 //a class is a blueprint for creating objects 
-//inside a class, you define the properties and/or methods(functions)
+//you can define the properties and/or methods(functions) of the class inside. 
 
 class Calculator{
 
@@ -27,8 +27,9 @@ class Calculator{
 
         //Delete
         delete(){
-            //convert current opperand to a string and chop off last character
+            //convert current operand to a string and chop off last character
             this.currentOperand = this.currentOperand.toString().slice(0,-1)
+            //console.log( 'delete: '+ ` ${this.currentOperand.toString().slice(0,-1)}`)
         }
         
         //add numbers to the screen  
@@ -100,27 +101,70 @@ class Calculator{
         }
 
         getDisplayNumber(number){
-            //convert number from string to decimal
-            const floatNumber = parseFloat(number)
-            
-            //if floatNumber is not a number
-            if (isNaN(floatNumber)) return ''
 
-            //if we do have a number, change number to string with commas.
-            return floatNumber.toLocaleString('en')}
+            //method 2: split number into integer portion and decimal portion. 
+            const stringNumber = number.toString()
+
+            //integer portion
+            const integerDigits = parseFloat(stringNumber.split('.')[0])
+            console.log('integer digits: ' +`${integerDigits}`)
+
+            //decimal portion
+            const decimalDigits = stringNumber.split('.')[1]
+            console.log('decimal digits: '+ `${decimalDigits}`)
+
+
+            let integerDisplay
+
+            if(isNaN(integerDigits)){
+                integerDisplay = ''
+            }else{
+                integerDisplay = integerDigits.toLocaleString('en', {maximumFractionDigits: 0})
+            }
+
+            console.log((decimalDigits != null))
+
+            if(decimalDigits != null){
+                return `${integerDisplay}.${decimalDigits}`
+            }else{
+                console.log('integerDisplay:' + `${integerDisplay}`)
+                
+                return integerDisplay;
+              
+            }
+
+        //method 1: did not work because we can't parse '.' to a float number,
+        //so the  decimal place does not show on the display, neither do zeroes after the decimal place
+            // //convert number from string to decimal -> pron
+            // const floatNumber = parseFloat(number)
+            
+            // //if floatNumber is not a number
+            // if (isNaN(floatNumber)) return ''
+
+            // //if we do have a number, change number to string with commas.
+            // return floatNumber.toLocaleString('en')
         }
+        
 
         updateDisplay(){
             this.currentOperandTextElement.innerText =
              this.getDisplayNumber(this.currentOperand)
+            console.log('currentOperandTextElement.innerText: ' +`${this.currentOperandTextElement.innerText}`)
             //to show commas and operations:
+
             //if we have an operation, display our previous operand and our operation 
             if(this.operation != null){
                 this.previousOperandTextElement.innerText = 
                 `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+
+                console.log('previousOperandTextElement.innerText: ' +`${this.previousOperandTextElement.innerText}`)
+
+            }else{
+                this.previousOperandTextElement.innerText = ''
             }
         }
-}
+    }
+      
 //constant variables that will be our buttons 
 
 const numberButtons = document.querySelectorAll('[data-number]')
